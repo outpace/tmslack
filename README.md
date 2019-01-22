@@ -24,9 +24,8 @@ In a nutshell:
 
 In a nutshell:
 
-1. Clone this repository
-2. Run `pip install .` from the root of the repository
-3. Add a `${HOME}/.config/tmslack/config.yml` with the following configuration:
+1. Run `pip install https://github.com/outpace/tmslack/archive/master.zip`
+2. Add a `${HOME}/.config/tmslack/config.yml` with the following configuration:
    
    ```yaml
    user: <user>
