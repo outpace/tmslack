@@ -13,7 +13,7 @@ There are two parts two installing tmslack:
 
 In a nutshell:
 
-1. In a browser where you are logged into a workspace, browse to [https://api.slack.com/apps?new_app=1]().
+1. In a browser where you are logged into a workspace, browse to [Create a Slack App](https://api.slack.com/apps?new_app=1).
 2. Choose an application name and workspace and then click *Create App*.
 3. Click on *Bots* and add a bot user.
 4. Click on *Install App* from the menu on the left and click on *Install App to Workspace*.
