@@ -98,3 +98,13 @@ def test_get_through(cache):
     assert cache['d'] == 'from lambda'
     assert cache._data == {'a': 1, 'b': 2, 'c': 3, 'd': 'from lambda'}
     assert unpickle(cache) == cache._data
+
+
+def test_get_through_with_none(cache):
+    def or_else(_):
+        return None
+    assert cache.get_through('a', or_else) == 1
+    assert cache.get_through('d', or_else) is None
+    assert not cache.has_key('d')
+    assert cache._data == {'a': 1, 'b': 2, 'c': 3}
+    assert unpickle(cache) == cache._data

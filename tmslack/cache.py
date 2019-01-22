@@ -90,7 +90,8 @@ class Cache:
                 return cache.get(key)
             else:
                 value = or_else(key)
-                cache.set(key, value)
+                if value is not None:
+                    cache.set(key, value)
                 return value
 
         Args:
@@ -100,7 +101,8 @@ class Cache:
         if self.has_key(key):
             return self.get(key)
         value = or_else(key)
-        self.__setitem__(key, value)
+        if value is not None:
+            self.__setitem__(key, value)
         return value
 
     def __repr__(self):
