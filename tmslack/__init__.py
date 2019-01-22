@@ -10,7 +10,7 @@ DEFAULT_CACHE_DIRECTORY = str(Path(xdg.XDG_CACHE_HOME, 'tmslack'))
 DEFAULT_CONFIG_PATH = str(Path(xdg.XDG_CONFIG_HOME, 'tmslack', 'config.yml'))
 
 
-@click.command()
+@click.command(help='Invites a fellow slack user to your tmate.')
 @click.option('--config-file',
               default=DEFAULT_CONFIG_PATH,
               type=click.Path(exists=True, file_okay=True, dir_okay=False),
