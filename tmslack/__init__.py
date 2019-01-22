@@ -25,8 +25,13 @@ DEFAULT_CONFIG_PATH = str(Path(xdg.XDG_CONFIG_HOME, 'tmslack', 'config.yml'))
 @click.argument('user', nargs=-1, type=str)
 def main(config_file: str, cache_directory: str, user: Tuple[str, ...]):
     """Does all of the actual work."""
+    ssh_connection = tmate.ssh_connection()
     configuration = config.load(config_file)
     client = slack.Client(configuration, cache_directory)
-    ssh_connection = tmate.ssh_connection()
-    print(ssh_connection)
-    return 0
+    my_user_id = client.lookup_user_id(configuration.user)
+    message = f'Hello! <@{my_user_id}> would like you to join a tmate session at ' \
+        f'`<ssh://{ssh_connection}|ssh {ssh_connection}>`.'
+    for user_id in set(map(client.lookup_user_id, user)):
+        conversation_id = client.lookup_conversation_id([user_id])
+        client.send_message(conversation_id, message)
+    click.echo('👍')
