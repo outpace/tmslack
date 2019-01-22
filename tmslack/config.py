@@ -7,6 +7,7 @@ import yaml
 class Config(NamedTuple):
     """Represents the configuration for the tmslack utility."""
     token: str
+    user: str
 
 
 def __load_yaml(path) -> dict:
@@ -31,6 +32,16 @@ def __get_token(config: dict) -> str:
     return token
 
 
+def __get_user(config: dict) -> str:
+    """Gets the user from the configuration, with some sanity checks."""
+    if 'user' not in config:
+        raise ValueError("No user found in the configuration.")
+    user = config['user']
+    if not isinstance(user, str):
+        raise ValueError(f'The user must be a string, found a {type(user).__name__}.')
+    return user
+
+
 def load(path) -> Config:
     """Loads, validates, and returns the contents of the configuration file at the given path.
 
@@ -45,4 +56,5 @@ def load(path) -> Config:
     """
     config = __load_yaml(path)
     token = __get_token(config)
-    return Config(token)
+    user = __get_user(config)
+    return Config(token, user)
