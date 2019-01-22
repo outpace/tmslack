@@ -25,7 +25,7 @@ class Client:
             return {k: result[k] for k in ['url', 'team', 'user', 'team_id', 'user_id']}
 
         self._info = teams_cache.get_through(token, lookup_team)
-        self._cache = Cache(Path(cache_dir, self._info.team_id))
+        self._user_cache = Cache(Path(cache_dir, f"{self._info['team_id']}_users"))
 
     @property
     def info(self):
@@ -35,3 +35,26 @@ class Client:
         identifier, and the team identifier.
         """
         return self._info
+
+    def lookup_user(self, username):
+        """Looks up a user in the team by the user's name or real name."""
+        def list_users(cursor=None):
+            while True:
+                result = self._slack.api_call('users.list', cursor=cursor)
+                del result['headers']
+                if not result['ok']:
+                    raise IOError(f'Failed to list users: {result["error"]}')
+                for member in result['members']:
+                    yield member
+                del result['members']
+                cursor = result['response_metadata']['next_cursor']
+                if cursor == "":
+                    break
+
+        def do_lookup(_):
+            for user in list_users():
+                if username == user.get('name') or username == user.get('real_name'):
+                    return user
+            return None
+
+        return self._user_cache.get_through(username, do_lookup)
