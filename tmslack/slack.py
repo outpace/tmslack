@@ -40,8 +40,8 @@ class Client:
         """
         return self._info
 
-    def lookup_user(self, username):
-        """Looks up a user in the team by the user's name or real name."""
+    def lookup_user_id(self, username) -> str:
+        """Looks up a user identifier in the team by the user's name or real name."""
         def list_users(cursor=None):
             while True:
                 result = self._slack.api_call('users.list', cursor=cursor)
@@ -55,10 +55,10 @@ class Client:
                 if cursor == "":
                     break
 
-        def do_lookup(_):
+        def do_lookup_id(_):
             for user in list_users():
                 if username == user.get('name') or username == user.get('real_name'):
-                    return user
+                    return user['id']
             raise ClientException(f'The user {username} could not be found.')
 
-        return self._user_cache.get_through(username, do_lookup)
+        return self._user_cache.get_through(username, do_lookup_id)
