@@ -1,6 +1,6 @@
 """A tmslack-specific wrapper for the slack client."""
 from pathlib import Path
-from typing import Sequence
+from typing import Sequence, NoReturn
 
 from slackclient import SlackClient
 
@@ -72,3 +72,11 @@ class Client:
             raise ClientException(f'Failed to retrieve get conversation: {result["error"]}')
 
         return result['channel']['id']
+
+    def send_message(self, channel_id: str, message: str) -> NoReturn:
+        """Sends the given message to the given channel."""
+        result = self._slack.api_call('chat.postMessage',
+                                      channel=channel_id,
+                                      text=message)
+        if not result['ok']:
+            raise ClientException(f'Failed to post message: {result["error"]}')
