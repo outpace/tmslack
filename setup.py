@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tmslack",
-    version="0.0.1.dev",
+    version="0.1.0.dev",
     author="Daniel Solano Gómez",
     author_email="daniel.solano@outpace.com",
     description="Invite fellow slack users into your tmate session.",
