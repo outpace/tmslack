@@ -7,6 +7,10 @@ from tmslack.cache import Cache
 from tmslack.config import Config
 
 
+class ClientException(Exception):
+    """Class for exceptions in the slack client."""
+
+
 class Client:
     """"A slack client that can be used to send messages.
 
@@ -21,7 +25,7 @@ class Client:
         def lookup_team(_):
             result = self._slack.api_call('auth.test')
             if not result['ok']:
-                raise IOError('Failed to retrieve team information.')
+                raise ClientException(f'Failed to retrieve team information: {result["error"]}')
             return {k: result[k] for k in ['url', 'team', 'user', 'team_id', 'user_id']}
 
         self._info = teams_cache.get_through(token, lookup_team)
@@ -55,6 +59,6 @@ class Client:
             for user in list_users():
                 if username == user.get('name') or username == user.get('real_name'):
                     return user
-            return None
+            raise ClientException(f'The user {username} could not be found.')
 
         return self._user_cache.get_through(username, do_lookup)
