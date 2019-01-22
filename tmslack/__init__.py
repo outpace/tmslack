@@ -1,5 +1,6 @@
 """Provides the main entry point for the tmslack utility."""
 from pathlib import Path
+from typing import Tuple
 
 import click
 import xdg
@@ -21,7 +22,8 @@ DEFAULT_CONFIG_PATH = str(Path(xdg.XDG_CONFIG_HOME, 'tmslack', 'config.yml'))
               default=DEFAULT_CACHE_DIRECTORY,
               help='The path to the cache directory.',
               show_default=True)
-def main(config_file, cache_directory):
+@click.argument('user', nargs=-1, type=str)
+def main(config_file: str, cache_directory: str, user: Tuple[str, ...]):
     """Does all of the actual work."""
     configuration = config.load(config_file)
     client = slack.Client(configuration, cache_directory)
