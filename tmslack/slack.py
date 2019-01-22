@@ -1,5 +1,6 @@
 """A tmslack-specific wrapper for the slack client."""
 from pathlib import Path
+from typing import Sequence
 
 from slackclient import SlackClient
 
@@ -62,3 +63,12 @@ class Client:
             raise ClientException(f'The user {username} could not be found.')
 
         return self._user_cache.get_through(username, do_lookup_id)
+
+    def lookup_conversation_id(self, user_ids: Sequence[str]) -> str:
+        """Given a sequence of user names, get the identifier of the conversation between all those
+        users."""
+        result = self._slack.api_call('conversations.open', users=list(user_ids))
+        if not result['ok']:
+            raise ClientException(f'Failed to retrieve get conversation: {result["error"]}')
+
+        return result['channel']['id']
