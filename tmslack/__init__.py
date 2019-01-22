@@ -4,7 +4,7 @@ from pathlib import Path
 import click
 import xdg
 
-from tmslack import config, slack
+from tmslack import config, slack, tmate
 
 DEFAULT_CACHE_DIRECTORY = str(Path(xdg.XDG_CACHE_HOME, 'tmslack'))
 DEFAULT_CONFIG_PATH = str(Path(xdg.XDG_CONFIG_HOME, 'tmslack', 'config.yml'))
@@ -25,4 +25,6 @@ def main(config_file, cache_directory):
     """Does all of the actual work."""
     configuration = config.load(config_file)
     client = slack.Client(configuration, cache_directory)
-    print(client.info)
+    ssh_connection = tmate.ssh_connection()
+    print(ssh_connection)
+    return 0
