@@ -77,6 +77,7 @@ class Client:
         """Sends the given message to the given channel."""
         result = self._slack.api_call('chat.postMessage',
                                       channel=channel_id,
+                                      as_user=True,
                                       text=message)
         if not result['ok']:
             raise ClientException(f'Failed to post message: {result["error"]}')
