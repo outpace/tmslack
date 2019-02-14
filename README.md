@@ -40,7 +40,7 @@ In a nutshell:
 To use tmslack, you will need to be inside of an active and connected tmate session.
 Once inside, just invoke tmslack with the list of users you would like to invite to your session:
 
-    > tmate anisha taro
+    > tmslack anisha taro
     👍
 
 If you get the thumbs up, everything should be great.
